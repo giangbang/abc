@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Calculator online</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+		<style>
+			#root {
+				display: flex;
+				flex-direction:column;
+			}
+			#keyboard {
+			}
+			tr {
+				display:flex;
+				flex-display:row
+			}
+			td div{
+				width: 4em;
+				height: 2em;
+			}
+			table{
+				border: 10em;
+			}
+			#screen {
+				width: 100%;
+				
+			}
+			#root {
+				width: 16.5em;
+				text-align: right;
+			}
+			#current {
+				font-size:22px
+			}
+			#ans {
+				font-size:16px;
+				color:gray;
+			}
+		</style>
+		<script>
+			function cal(a, op, b) {
+				if (op == "") {
+					if (parseFloat(b) != 0) return parseFloat(b);
+					else return parseFloat(a);
+				}
+				switch(op) {
+					case "+":
+						return parseFloat(a) + parseFloat(b);
+					case "-":
+						return parseFloat(a) - parseFloat(b);
+					case "*":
+						return parseFloat(a) * parseFloat(b);
+					case "/":
+						return parseFloat(a) / parseFloat(b);
+					case "%":
+						return parseFloat(a) / 100;
+				}
+				return a;
+			}
+			var ops = ["+", "-", "*", "/", "=", "%"];
+			var hops = ["(", ")"];
+			var cur = "0", ans = 0, op = "";
+			document.addEventListener('click', ()=> {
+				let buttons = document.querySelectorAll("td div");
+				buttons.forEach((item, index) => {
+					item.onclick = function() {
+						let value = item.dataset.value;
+						if (hops.includes(value)) {
+							window.alert("Sorry, we have not supported this operation yet!");
+							return;
+						}
+						if (value == "AC") {
+							ans = 0;
+							cur = 0;
+							op = "";
+						}
+						else if (value == "%") {
+							ans = cal(ans, op, parseFloat(cur)/100);
+							op = "";
+							cur = "0";
+						}
+						else if (ops.includes(value)) {
+							ans = cal(ans, op, cur);
+							op = value != "=" ? value : "";
+							cur = "0";
+						}
+						else {
+							if (cur.includes(".") && value == ".") return;
+							else cur += value;
+						}
+						console.log(value);
+					};
+				});
+				if (cur[0] == "0" && cur.length > 1) cur = cur.slice(1);
+				document.querySelector("#current").innerHTML = (cur);
+				document.querySelector("#ans").innerHTML = "Ans = " + ans;
+				document.querySelector("#op").innerHTML = op;
+			});
+		</script>
+	</head>
+	<body>
+		<div id="root">
+			<div  class="alert alert-secondary" role="alert" id="screen">
+				<div id="ans">Ans = 0</div>
+				<div id="op"></div>
+				<div id="current">0</div>
+			</div>
+			<div id="keyboard">
+				<table>
+					<tr>
+						<td>
+							<div class="btn btn-secondary" data-value="(">(</div>
+						</td>
+						<td>
+							<div class="btn btn-secondary" data-value=")">)</div>
+						</td>
+						<td>
+							<div class="btn btn-secondary" data-value="%">%</div>
+						</td>
+						<td>
+							<div class="btn btn-primary" data-value="AC">AC</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="btn btn-light" data-value="7">7</div>
+						</td>
+						<td>
+							<div class="btn btn-light" data-value="8">8</div>
+						</td>
+						<td>
+							<div class="btn btn-light" data-value="9">9</div>
+						</td>
+						<td>
+							<div class="btn btn-secondary" data-value="/">÷</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="btn btn-light" data-value="4">4</div>
+						</td>
+						<td>
+							<div class="btn btn-light" data-value="5">5</div>
+						</td>
+						<td>
+							<div class="btn btn-light" data-value="6">6</div>
+						</td>
+						<td class="">
+							<div class="btn btn-secondary" data-value="*">×</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="">
+							<div class="btn btn-light" data-value="1">1</div>
+						</td>
+						<td class="">
+							<div class="btn btn-light" data-value="2">2</div>
+						</td>
+						<td class="">
+							<div class="btn btn-light" data-value="3">3</div>
+						</td>
+						<td class="">
+							<div class="btn btn-secondary" data-value="-">-</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="">
+							<div class="btn btn-light" data-value="0">0</div>
+						</td>
+						<td class="">
+							<div class="btn btn-light" data-value=".">.</div>
+						</td>
+						<td class="">
+							<div class="btn btn-primary" data-value="=">=</div>
+						</td>
+						<td class="">
+							<div class="btn btn-secondary" data-value="+">+</div>
+						</td>
+					</tr>
+					
+				</table>
+			</div>
+		</div>
+		
+	</body>
+</html>
